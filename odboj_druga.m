@@ -6,8 +6,8 @@ function [new_point, new_dir, index] = odboj_druga(point,dir)
 poli = @(r) [norm(dir)^2, 2*dot(point,dir), (norm(point)^2 - r^2)];
 % Polinom, ki enkodira presečišče nove točke in enotske krožnice s polmerom r
 
-roots3 = lfilter(roots(poli(3)), @(x) x > 0);
-roots4 = lfilter(roots(poli(4)), @(x) x > 0);
+roots3 = lfilter(roots(poli(3)), @(x) x > 1e-5);
+roots4 = lfilter(roots(poli(4)), @(x) x > 1e-5);
 % Zanimajo nas samo pozitivne ničle. S tem poberemo tudi kompleksne.
 
 % Koeficient, ki ga iščemo, je najmanjša pozitivna ničla izmed obeh
@@ -21,6 +21,7 @@ elseif isempty(roots3)
 else
     [coef, index] = min([min(roots3), min(roots4)]);
 end
+
 
 new_point = coef * dir' + point;
 % Nova točka je premaknjena za koeficient * smer.

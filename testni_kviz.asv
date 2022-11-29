@@ -11,19 +11,21 @@ disp(horner_with_float(p1,a1,6,10))
 disp("Druga naloga")
 vir = [3.5, 0.5];
 smer0 = [1 2]';
-[t1, s1,i1] = odboj_druga(vir, smer0);
-[t2, s2,i2] = odboj_druga(t1, s1);
-[t3, s3,i3] = odboj_druga(t2, s2);
-[t4, s4,i4] = odboj_druga(t3, s3);
+[t1, s1, i1] = odboj_druga(vir, smer0);
+[t2, s2, i2] = odboj_druga(t1, s1);
+[t3, s3, i3] = odboj_druga(t2, s2);
+[t4, s4, i4] = odboj_druga(t3, s3);
 
 disp([i1 i2 i3 i4])
 disp(t1(1)) 
 disp(t2(2)) 
-% Zgodilo bi se lahko, da bi se žarek večkrat zrcalil od enega zrcala,
-% preden se odbije od drugega, zato opazujem tudi in
-disp(norm(p4 - vir))
+disp(norm(t4 - vir))
 
 disp("Tretja naloga")
+
+f3 = @(x) 5 * cos(x - exp(x)) - x;
+disp(regula_falsi(f3, 2.75, 3, 1e-20, 3));
+disp(regula_falsi(f3, ))
 
 disp("Četrta naloga")
 

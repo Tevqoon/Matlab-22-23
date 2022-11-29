@@ -19,9 +19,17 @@ smer0 = [1 2]';
 disp([i1 i2 i3 i4])
 disp(t1(1)) 
 disp(t2(2)) 
-disp(norm(p4 - vir))
+disp(norm(t4 - vir))
 
 disp("Tretja naloga")
+
+f3 = @(x) 5 * cos(x - exp(x)) - x;
+[y21, korr21] = regula_falsi(f3, 2.75, 3, 0, 3);
+disp(y21)
+[y22, korr22] = regula_falsi(f3, 2, 2.5, 1e-10, Inf);
+disp(korr22)
+[y23, korr23] = regula_falsi(f3, 0, 3, 0, Inf);
+disp(y23)
 
 disp("Četrta naloga")
 
