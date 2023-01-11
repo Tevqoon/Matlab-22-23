@@ -4,26 +4,90 @@ disp("Prva naloga")
 
 h1 = 0.01;
 
-X1 = arrayfun(@(i) i * h1, 1:100);
+x1 = arrayfun(@(i) i * h1, 1:100);
+h = 0.01;
+
+xconst = zeros(1, 100)';
+for i=1:100
+    xconst(i) = i * h;
+end
+
+% Prvi del
+
+disp('jacobijeva')
+
+Y = xconst;
+eps = 1e-3;
+for j=1:1000
+    Y(1,j+1) = xconst(1)^2 + exp(-Y(1,j));
+    for i=2:100
+        Y(i,j+1) = Y(i-1,j) + xconst(i)^2 + exp(-Y(i,j));
+    end
+    if norm(Y(1:100, j+1) - Y(1:100, j), 'Inf') < eps
+        break;
+    end
+end
+
+y = Y(1:100, j+1);
+disp(y(100))
+
+% Drugi del
+
+disp('seidlova')
+Y = xconst;
+eps = 1e-3;
+    for j=1:1000
+        Y(1,j+1) = xconst(1)^2 + exp(-Y(1,j));
+        for i=2:100
+            Y(i,j+1) = Y(i-1,j+1) + xconst(i)^2 + exp(-Y(i,j));
+        end
+        if norm(Y(1:100, j+1) - Y(1:100, j), 'Inf') < eps
+            break;
+        end
+    end
+k = j;
+y = Y(1:100, j+1);
+disp(y(100))
+
+% Tretji del
+
+disp('newtonova')
+g = @(u) funG(xconst, u);
+jg = @(u) funJG(u);
+% Y = xconst;
+% eps = 1e-3;
+% for j=1:1000
+%     dx = jg(Y(:,j)) \ (-g(Y(:,j)));
+%     Y(:,j+1) = Y(:,j) + dx;
+%     if norm(Y(1:100, j+1) - Y(1:100, j), 'Inf') < eps
+%         break;
+%     end
+% end
+% k = j;
+% y = Y(:, j+1);
+% disp(Y(100,1:j+1))
+
+y = newton(g, jg, x1, 1e-3, 100);
+disp(y)
 
 disp("Druga naloga")
 f2 = @(x) x * sin(3*x);
 df2 = @(x) 3 * x * cos(3 * x) + sin(3 * x);
 x2 = arrayfun(@(i) i/5, 0:10);
-y2 = arrayfun(f2, x2);
+y2 = arrayfun(f2, x2);l1
 
-disp("Prvi del")
+% Prvi del
 p2 = @(x) polyval(polyfit(x2, y2, 3), x);
 disp(norm(arrayfun(@(x) f2(x) - p2(x), x2), "inf"))
 
-disp("Drugi del")
+% Drugi del
 x25 = x2(6);
 y25 = y2(6);
 
 p2f = @(x) polyval(polyfix(x2, y2, 3, x25, y25), x);
 disp(norm(arrayfun(@(x) f2(x) - p2f(x), x2), "inf"))
 
-disp("Tretji del")
+% Tretji del
 x2l = x2(1:6);
 y2l = y2(1:6);
 x2r = x2(7:11);
@@ -35,19 +99,19 @@ p2lr = @(x) (x <= 1) * p2fl(x) + (x > 1) * p2fr(x);
 disp(norm(arrayfun(@(x) f2(x) - p2lr(x), x2), "inf"))
 
 disp("Tretja naloga")
-A3 = delsq(numgrid("C", 15));
+A3 = delsq(numgrid("C", 10));
 l3 = length(A3);
 x3 = ones(l3, 1)/norm(ones(l3, 1));
 
-disp("Prvi del")
+% Prvi del
 e = potencna(A3, x3, 1e-5, Inf);
 disp(e)
 
-disp("Drugi del")
+% Drugi del
 e = 1 / potencna(inv(A3), x3, 0, 5);
 disp(e)
 
-disp("Tretji del")
+% Tretji del
 e = hotelling(A3, x3, 0, 3000, 5);
 disp(e)
 
@@ -59,14 +123,16 @@ A4 = [4 -8 8 4;
 B4 = hess(A4);
 C4 = qr_iter(B4, 1e-8);
 
-disp("Prvi del")
-disp(max(diag(C4)))
+% Prvi del
+l41 = max(diag(C4));
+disp(l41)
 
-disp("Drugi del")
-disp(min(diag(C4)))
+% Drugi del
+l44 = min(diag(C4));
+disp(l44)
 
-disp("Tretji del")
+% Tretji del
 x4 = (1/2) * [1 1 1 1]';
-[e41, x41] = potencna(B4, x4, 1e-6, Inf);
-[e42, x42] = potencna(inv(B4), x4, 1e-6, Inf);
+x41 = inverzna_potencna(A4, x4, l41, Inf, 1e-6);
+x42 = inverzna_potencna(A4, x4, l44, Inf, 1e-6);
 disp(norm(x41,"inf") + norm(x42, "inf"))

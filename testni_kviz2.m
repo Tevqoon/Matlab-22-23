@@ -2,15 +2,21 @@ format long
 
 disp("Prva naloga")
 
-h1 = 0.01;
+x1 = arrayfun(@(i) i * h1, 1:100);
+h = 0.01;
 
-X1 = arrayfun(@(i) i * h1, 1:100);
+[yj, kj] = jacobi(x1, @g1, 1e-3, 1000);
+disp(yj(100))
+[ys, ks] = seidl(x1, @g1, 1e-3, 1000);
+disp(ys(100))
+[yn, Xn, kn] = newton(@f1, @Jf1, x1', 1e-1, 1000);
+disp(yn(100))
 
 disp("Druga naloga")
 f2 = @(x) x * sin(3*x);
 df2 = @(x) 3 * x * cos(3 * x) + sin(3 * x);
 x2 = arrayfun(@(i) i/5, 0:10);
-y2 = arrayfun(f2, x2);
+y2 = arrayfun(f2, x2);l1
 
 % Prvi del
 p2 = @(x) polyval(polyfit(x2, y2, 3), x);
@@ -35,7 +41,7 @@ p2lr = @(x) (x <= 1) * p2fl(x) + (x > 1) * p2fr(x);
 disp(norm(arrayfun(@(x) f2(x) - p2lr(x), x2), "inf"))
 
 disp("Tretja naloga")
-A3 = delsq(numgrid("C", 15));
+A3 = delsq(numgrid("C", 10));
 l3 = length(A3);
 x3 = ones(l3, 1)/norm(ones(l3, 1));
 
