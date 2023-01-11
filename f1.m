@@ -1,4 +1,5 @@
 function y = f1(x)
+% Vzamemo seznam x-ov, vrnemo seznam y-ov.
 
 n = length(x);
 y = zeros(n, 1);

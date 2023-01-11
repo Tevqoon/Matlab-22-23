@@ -16,7 +16,7 @@ disp("Druga naloga")
 f2 = @(x) x * sin(3*x);
 df2 = @(x) 3 * x * cos(3 * x) + sin(3 * x);
 x2 = arrayfun(@(i) i/5, 0:10);
-y2 = arrayfun(f2, x2);l1
+y2 = arrayfun(f2, x2);
 
 % Prvi del
 p2 = @(x) polyval(polyfit(x2, y2, 3), x);
