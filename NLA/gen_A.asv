@@ -1,0 +1,7 @@
+function [A] = gen_A(n,T)
+    % Create a time grid with n+1 points
+    t = linspace(0, T, n+1);
+    
+    K = @(razlika) 1/(2*sqrt(pi)) * (razlika)^(-3/2) * exp(-1/(4*(t-ta)))
+end
+
