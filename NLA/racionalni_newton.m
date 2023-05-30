@@ -17,11 +17,11 @@ X = zeros(n_max + 1, 1);
 X(1) = x0;
 
 for n = 1:n_max
-    if n > 1 && abs(X(n) - X(n-1)) < eps
-        n_final = n;
-        X(n+1) = X(n);
-        break;
-    end
+%     if n > 1 && abs(X(n) - X(n-1)) < eps
+%         n_final = n;
+%         X(n+1) = X(n);
+%         break;
+%     end
     fr1 = 1 / (d(i) - X(n));
     c1 = [fr1 1; fr1^2 0] \ [psi1(X(n)); dpsi1(X(n))];
     fr2 = 1 / (d(i+1) - X(n));
@@ -31,7 +31,14 @@ for n = 1:n_max
     h2 = @(l) c2(1) / (d(i+1) - l) + c2(2);
     h = @(l) 1 + h1(l) + h2(l);
 
-    X(n+1) = fzero(h, X(n));
+
+    levi = fzero(h, x0);
+    desni = fzero(h, x0 + 1e-5);
+%     disp("Newton")
+   %  disp(levi);
+%     disp(desni);
+%     disp("End Newton")
+    X(n+1) = desni;
 
 end
 
